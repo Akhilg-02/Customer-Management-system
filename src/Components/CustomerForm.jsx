@@ -16,6 +16,7 @@ import {
   Select,
   MenuItem,
   InputAdornment,
+  colors,
 } from "@mui/material";
 
 const CustomerForm = () => {
@@ -23,11 +24,11 @@ const CustomerForm = () => {
   const [panLoader, setpanLoader] = useState(false);
   const [codeLoder, setcodeLoder] = useState(false);
 
-  // States for list for states/cities - Optional
+  // States for list for selecting states/cities
   const [cityList, setCityList] = useState([]);
   const [stateList, setStateList] = useState([]);
 
-  // Adding customer to storage using context-api
+  // Calling addCustomer for storage using context-api
   const { addCustomer } = useCustomer();
 
   // Generating unique customer id
@@ -60,8 +61,9 @@ const CustomerForm = () => {
         state: values.state,
         city: values.city,
       };
-      //console.log(values);
+      // Adding customer data to local storage
       addCustomer(newCustomer);
+      alert("Coustomer is added")
       resetForm();
     },
   });
@@ -124,7 +126,7 @@ const CustomerForm = () => {
             setCityList([]);
           }
 
-          // console.log("Api-resp-postcode", response.data);
+      // console.log("Api-resp-postcode", response.data);
         }, 2000);
       } catch (error) {
         setcodeLoder(false);
@@ -133,6 +135,9 @@ const CustomerForm = () => {
     }
   };
 
+
+
+  // Function for navigating to the specific route
   const navigate = useNavigate();
 
   const handlePage = () => {
@@ -142,25 +147,41 @@ const CustomerForm = () => {
   return (
     <>
       <FormikProvider>
-        <Button variant="contained" color="primary" onClick={handlePage}>
+        <Button 
+        variant="contained"
+        color="primary"
+        onClick={handlePage}
+        sx={{
+          width:"20%",
+          float:"right",
+          mt:-14,
+          mr:-15,
+          height:"7vh",
+          backgroundColor:"#5c6bc0"
+
+        }}
+        >
           Customer List
         </Button>
         <Paper
+          variant='elevation'
           sx={{
             display: "flex",
             justifyContent: "space-evenly",
             flexDirection: "column",
             p: 3,
-            backgroundColor: "white",
+            backgroundColor:"white",
             margin: "2vh auto",
             top: "50%",
             left: "50%",
             maxWidth: 500,
             height: "102vh",
+            borderRadius:"10px"
           }}
         >
           <span style={{ display: "flex" }}>
             <TextField
+            sx={{textTransform:"uppercase"}}
               fullWidth
               required
               label="Pan no:"
@@ -257,6 +278,7 @@ const CustomerForm = () => {
               />
             )}
           </span>
+          {/* Pre-filling the available state, by single state or list of states by Select */}
           {stateList.length > 1 ? (
             <FormControl
               required
@@ -290,7 +312,7 @@ const CustomerForm = () => {
               helperText={formik.touched.state && formik.errors.state}
             />
           )}
-
+            {/* Pre-filling the available city, by single city or list of cities by Select */}
           {cityList.length > 1 ? (
             <FormControl
               required
@@ -330,6 +352,10 @@ const CustomerForm = () => {
             variant="contained"
             color="primary"
             onClick={formik.handleSubmit}
+            sx={{
+               backgroundColor:"#5c6bc0"
+            }}
+           
           >
             Submit
           </Button>

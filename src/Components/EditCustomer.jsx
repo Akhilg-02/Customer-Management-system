@@ -11,7 +11,10 @@ import {
 } from "@mui/material";
 
 const EditCustomer = ({customerId,onClose}) => {
+  // Calling customers and updateCustomer using context-api
   const{customers, updateCustomer}=useCustomer();
+
+  // State for specific customer details
   const [customer,setCustomer] = useState(null);
 
   useEffect(()=>{
@@ -19,6 +22,7 @@ const EditCustomer = ({customerId,onClose}) => {
     setCustomer(customerData)
   },[customerId,customers]);
 
+  // Formik library configuration for editing customer form
   const formik = useFormik({
     initialValues: {
       pan:customer?.pan,
@@ -47,7 +51,10 @@ const EditCustomer = ({customerId,onClose}) => {
         city: values.city,
       };
 
+      // Editing customer data and then saving in local storage
       updateCustomer(newCustomer);
+
+      // For closing the editing modal
       onClose();
     },
   });
@@ -66,7 +73,7 @@ const EditCustomer = ({customerId,onClose}) => {
           top:"50%",
           left:"50%",
           maxWidth:400,
-          height:"90vh"
+          height:"90vh",
         }}
         
         >
@@ -173,6 +180,9 @@ const EditCustomer = ({customerId,onClose}) => {
             variant="contained"
             color="primary"
             onClick={formik.handleSubmit}
+            sx={{
+              backgroundColor:"#5c6bc0"
+           }}
           >
             Update
           </Button>
